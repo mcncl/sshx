@@ -1,4 +1,5 @@
 use std::process::ExitCode;
+use std::env;
 
 use ansi_term::Color::{Cyan, Fixed, Green};
 use anyhow::Result;
@@ -30,6 +31,11 @@ fn print_greeting(shell: &str, controller: &Controller) {
         None => String::from("[dev]"),
     };
 
+    let link_v = match env::vars().any(|(name, _)| name.starts_with("BUILDKITE_")) {
+        true => format!("1339;url='{}'", controller.url()),
+        false => controller.url().to_string(),
+    };
+
     println!(
         r#"
   {sshx} {version}
@@ -40,10 +46,11 @@ fn print_greeting(shell: &str, controller: &Controller) {
         sshx = Green.bold().paint("sshx"),
         version = Green.paint(&version_str),
         arr = Green.paint("➜"),
-        link_v = Cyan.underline().paint(controller.url()),
+        link_v = Cyan.underline().paint(&link_v),
         shell_v = Fixed(8).paint(shell),
     );
 }
+
 
 #[tokio::main]
 async fn start(args: Args) -> Result<()> {

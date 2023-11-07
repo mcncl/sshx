@@ -30,9 +30,8 @@ precompiled Linux binaries are statically linked.
 ### CI/CD
 
 You can also use sshx in continuous integration workflows to help debug tricky
-issues, like in GitHub Actions or Buildkite.
+issues, like in GitHub Actions.
 
-#### GitHub Actions
 ```yaml
 name: CI
 on: push
@@ -46,17 +45,6 @@ jobs:
       # ... other steps ...
 
       - run: curl -sSf https://sshx.io/get | sh && sshx
-      #      ^
-      #      └ This will open a remote terminal session and print the URL. It
-      #        should take under a second.
-```
-
-#### Buildkite
-```yaml
-steps:
-  - label: "Let's collaborate! :rocket:"
-    command: >
-      curl -sSf https://sshx.io/get | sh && sshx
       #      ^
       #      └ This will open a remote terminal session and print the URL. It
       #        should take under a second.
